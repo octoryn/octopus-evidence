@@ -1,0 +1,69 @@
+{
+  "name": "octopus-evidence",
+  "version": "0.1.0",
+  "description": "The shared Evidence primitive for the Octopus stack — canonical, hashable, tamper-evident evidence that flows between repos.",
+  "license": "Apache-2.0",
+  "author": "Ran Tao <ran@octopusos.ai>",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/octoryn/octopus-evidence.git"
+  },
+  "homepage": "https://github.com/octoryn/octopus-evidence#readme",
+  "bugs": {
+    "url": "https://github.com/octoryn/octopus-evidence/issues"
+  },
+  "keywords": [
+    "evidence",
+    "provenance",
+    "canonical-hash",
+    "tamper-evident",
+    "hash-chain",
+    "integrity",
+    "ai-agents",
+    "governance",
+    "octopus",
+    "octoryn"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "README.md",
+    "README.zh-CN.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "coverage": "node --import tsx --test --experimental-test-coverage tests/*.test.ts",
+    "example": "tsx examples/evidence-chain.ts",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepublishOnly": "npm run typecheck && npm run format:check && npm run lint && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.22.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.19.0"
+  }
+}
