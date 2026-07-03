@@ -110,6 +110,48 @@ canonicalHash({ a: 1, b: 2 }) === canonicalHash({ b: 2, a: 1 }); // true
 `stableStringify` 拒绝任何 JSON 无法忠实往返的内容(非有限数值、`undefined`、
 环 (cycle)),因此一次“成功”的哈希绝不掩盖静默的数据丢失。
 
+## CLI —— 无需信任存储即可验证
+
+把一份 JSON 导出和这个二进制文件交给审计人员,他们就能独立地重新验证每一个 id、
+完整性哈希与链接 —— **无需编写代码,也无需信任生成它的那个存储**。零运行时依赖
+(仅使用 Node 内置模块)。
+
+```bash
+npx octopus-evidence verify export.json
+```
+
+文件可以包含单个 `Evidence`、`Evidence` 数组、裸的 `ChainLink` 数组,或一个带有
+`evidence` 和/或 `chain` 数组的对象 —— 形状会被自动检测。
+
+```
+Evidence: 3/3 verified, 0 failed
+Chain: ok (3 links)
+
+Result: VALID
+```
+
+如果任何内容被改动,验证在重算时就会出现不匹配,工具会如实指出 —— 被篡改的载荷、
+错误或缺失的密钥,或被破坏 / 重排的链:
+
+```
+Evidence: 2/3 verified, 1 failed
+  ✗ [1] ev_9f… — integrity/id mismatch (tampered or wrong secret)
+Chain: BROKEN at link 2 — previousHash mismatch at link 2 (chain broken or reordered)
+
+Result: INVALID
+```
+
+对于用 HMAC 密封的证据或链,用 `--secret` 传入相同的密钥;若需要机器可读的报告
+(例如在 CI 中),传入 `--format json`:
+
+```bash
+octopus-evidence verify export.json --secret "$EVIDENCE_KEY"
+octopus-evidence verify export.json --format json
+```
+
+退出码:**0** 全部有效,**1** 有任意证据/链无效,**2** 用法 / IO / 解析错误。
+运行 `octopus-evidence --help` 查看完整参考。
+
 ## 边界 (Boundaries)
 
 Evidence 是一个**原语**,而非一个系统。它没有存储、没有查询、没有网络、没有派生。

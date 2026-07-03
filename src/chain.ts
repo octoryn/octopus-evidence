@@ -76,6 +76,10 @@ export interface VerifyChainOptions {
  * hash, and each `hash` recomputed from its parts — plus, when supplied,
  * `expectedLength` / `expectedHead` to catch tail truncation. Returns the first
  * break, if any. Verify with the same `secret` used to build it.
+ *
+ * Like {@link verifyEvidence}, this **never throws on hostile data**: a link
+ * that is not a well-formed object (e.g. a `null` smuggled into a decoded JSON
+ * export) is reported as the first break, not dereferenced.
  */
 export function verifyChain(
   chain: readonly ChainLink[],
@@ -85,6 +89,13 @@ export function verifyChain(
   let previousHash = GENESIS_HASH;
   for (let i = 0; i < chain.length; i++) {
     const link = chain[i]!;
+    if (link === null || typeof link !== "object") {
+      return {
+        ok: false,
+        brokenAt: i,
+        reason: `malformed link at ${i} (not a chain-link object)`,
+      };
+    }
     if (link.sequence !== i) {
       return {
         ok: false,

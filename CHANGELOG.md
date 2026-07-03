@@ -6,6 +6,32 @@ All notable changes to Evidence are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 semantic versioning once it reaches 1.0.
 
+## [0.2.0] - 2026-07-03
+
+Adds a **zero-dependency CLI** so an auditor can verify an evidence/chain export
+from the command line — "verify without trusting the store" — plus a hardening
+of `verifyChain` to match the never-throws-on-hostile-data guarantee the rest of
+the primitive already makes. Purely additive; no evidence/chain hashes, ids, or
+APIs changed.
+
+### Added
+
+- **`octopus-evidence verify <file>` CLI.** Reads a JSON export (a single
+  `Evidence`, an array of them, a bare `ChainLink[]`, a lone link, or a
+  `{ evidence?, chain? }` wrapper — shape auto-detected) and independently
+  recomputes every id, integrity hash, and chain link. `--secret <s>` for keyed
+  (HMAC) data, `--format pretty|json`, `--help`, `--version`. Exit codes: `0`
+  all valid, `1` any invalid, `2` usage/IO/parse error. Node built-ins only.
+
+### Fixed
+
+- **`verifyChain` never throws on hostile links.** A non-object link (e.g. a
+  `null` smuggled into a decoded JSON export) is now reported as the first
+  break rather than dereferenced — matching `verifyEvidence`'s existing
+  "never throws, even on hostile stored data" guarantee. Every wrong-*value*
+  case was already caught; this closes the one crash vector (`null`/primitive
+  elements), which the new CLI surfaced.
+
 ## [0.1.0] - 2026-07-03
 
 First public release. The shared **Evidence** primitive for the Octopus stack —

@@ -75,3 +75,17 @@ test("HMAC chain verifies with the right key and fails with the wrong one", () =
 test("an empty chain verifies", () => {
   assert.deepEqual(verifyChain([]), { ok: true });
 });
+
+test("verifyChain never throws on hostile links (null smuggled into a decoded export)", () => {
+  const valid = buildChain(hashes);
+  // A null (or any non-object) link is reported as the first break, not dereferenced.
+  const withNull = [valid[0]!, null, valid[2]!] as unknown as ChainLink[];
+  const r = verifyChain(withNull);
+  assert.equal(r.ok, false);
+  assert.equal(r.brokenAt, 1);
+  const bareNull = verifyChain([null] as unknown as ChainLink[]);
+  assert.equal(bareNull.ok, false);
+  assert.equal(bareNull.brokenAt, 0);
+  // A primitive element also fails cleanly rather than throwing.
+  assert.equal(verifyChain([42] as unknown as ChainLink[]).ok, false);
+});

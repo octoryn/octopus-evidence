@@ -6,6 +6,29 @@ Evidence 的所有重要变更均记录于此。格式遵循
 [Keep a Changelog](https://keepachangelog.com/)，并且项目计划在达到 1.0 后遵循
 语义化版本（semantic versioning）。
 
+## [0.2.0] - 2026-07-03
+
+新增**零依赖 CLI**,审计员无需写代码即可在命令行验证证据/链导出 ——
+"无需信任存储即可验证";并加固 `verifyChain`,使其与原语其余部分一致地
+**永不因恶意数据抛异常**。纯增量;未改动任何证据/链的哈希、id 或 API。
+
+### 新增
+
+- **`octopus-evidence verify <file>` CLI。** 读取 JSON 导出(单个 `Evidence`、
+  `Evidence` 数组、裸 `ChainLink[]`、单个链节点,或 `{ evidence?, chain? }`
+  包装对象 —— 自动识别形状),独立重算每一个 id、完整性哈希与链节点。
+  `--secret <s>` 用于带密钥 (HMAC) 的数据,`--format pretty|json`、`--help`、
+  `--version`。退出码:`0` 全部有效,`1` 有任一无效,`2` 用法/IO/解析错误。
+  仅用 Node 内置模块。
+
+### 修复
+
+- **`verifyChain` 对恶意链节点永不抛异常。** 非对象的链节点(例如混入已解码
+  JSON 导出中的 `null`)现在会被报告为首个断点,而非直接解引用 —— 与
+  `verifyEvidence` 既有的"即使面对恶意存储数据也永不抛异常"保证一致。所有
+  错误*取值*的情形此前已被捕获;这修补了唯一的崩溃路径(`null`/原始值节点),
+  由新的 CLI 暴露。
+
 ## [0.1.0] - 2026-07-03
 
 首个公开发布。Octopus 栈共享的 **Evidence**（证据）原语 —— 一个规范 (canonical)、

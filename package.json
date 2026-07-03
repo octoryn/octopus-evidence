@@ -1,6 +1,6 @@
 {
   "name": "octopus-evidence",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The shared Evidence primitive for the Octopus stack — canonical, hashable, tamper-evident evidence that flows between repos.",
   "license": "Apache-2.0",
   "author": "Ran Tao <ran@octopusos.ai>",
@@ -30,6 +30,9 @@
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "octopus-evidence": "dist/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

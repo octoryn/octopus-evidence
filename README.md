@@ -114,6 +114,50 @@ canonicalHash({ a: 1, b: 2 }) === canonicalHash({ b: 2, a: 1 }); // true
 `stableStringify` rejects anything JSON can't faithfully round-trip (non-finite
 numbers, `undefined`, cycles) so a "successful" hash never hides silent data loss.
 
+## CLI — verify without trusting the store
+
+Ship an auditor a JSON export and this binary, and they can independently
+re-verify every id, integrity hash, and chain link — **without writing code and
+without trusting whatever store produced it**. Zero runtime dependencies (Node
+built-ins only).
+
+```bash
+npx octopus-evidence verify export.json
+```
+
+The file may contain a single `Evidence`, an array of `Evidence`, a bare array
+of `ChainLink`, or an object with an `evidence` and/or `chain` array — the shape
+is auto-detected.
+
+```
+Evidence: 3/3 verified, 0 failed
+Chain: ok (3 links)
+
+Result: VALID
+```
+
+If anything was altered, verification recomputes to a mismatch and the tool says
+so — a tampered payload, a wrong or missing key, or a broken/reordered chain:
+
+```
+Evidence: 2/3 verified, 1 failed
+  ✗ [1] ev_9f… — integrity/id mismatch (tampered or wrong secret)
+Chain: BROKEN at link 2 — previousHash mismatch at link 2 (chain broken or reordered)
+
+Result: INVALID
+```
+
+For HMAC-sealed evidence or chains, pass the same key with `--secret`; for a
+machine-readable report (e.g. in CI), pass `--format json`:
+
+```bash
+octopus-evidence verify export.json --secret "$EVIDENCE_KEY"
+octopus-evidence verify export.json --format json
+```
+
+Exit codes: **0** everything valid, **1** any evidence/chain invalid, **2**
+usage / IO / parse error. Run `octopus-evidence --help` for the full reference.
+
 ## Boundaries
 
 Evidence is a **primitive**, not a system. It has no storage, no query, no
