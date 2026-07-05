@@ -11,7 +11,7 @@
 > Octopus 栈共享的 **Evidence**(证据)原语 —— 一个规范 (canonical)、可哈希、
 > 防篡改的*支撑*单元,在各仓库之间流动。
 
-> **[Octopus Core](https://github.com/octoryn) 的一部分 —— 受治理 AI 的开源基础设施栈。** 这是其它仓库共享的根原语:[Scout](https://github.com/octoryn/octopus-scout) 采集证据 · [Observe](https://github.com/octoryn/octopus-observe) 规范化它 · [Blackboard](https://github.com/octoryn/octopus-blackboard) 为它排时间线 · [Runtime](https://github.com/octoryn/octopus-runtime) 基于它审批 · [Replay](https://github.com/octoryn/octopus-replay) 重建它 · [Experience](https://github.com/octoryn/octopus-experience) 为它建图 · [Inspect](https://github.com/octoryn/octopus-inspect) 校验它。
+> **[Octopus Core](https://github.com/octoryn) 的一部分 —— 受治理 AI 的开源基础设施栈。** 这是其它仓库共享的根原语:[Scout](https://github.com/octoryn/octopus-scout) 采集证据 · [Observe](https://github.com/octoryn/octopus-observe) 规范化它 · [Blackboard](https://github.com/octoryn/octopus-blackboard) 为它排时间线 · [Workstate](https://github.com/octoryn/octopus-workstate) 在其上记录工作状态 · [Runtime](https://github.com/octoryn/octopus-runtime) 基于它审批 · [Replay](https://github.com/octoryn/octopus-replay) 重建它 · [Experience](https://github.com/octoryn/octopus-experience) 为它建图 · [Inspect](https://github.com/octoryn/octopus-inspect) 校验它。
 
 ```
 Evidence  →  hash  →  chain (timeline)  →  verify

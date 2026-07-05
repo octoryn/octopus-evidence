@@ -11,7 +11,7 @@
 > The shared **Evidence** primitive for the Octopus stack — a canonical,
 > hashable, tamper-evident unit of *support* that flows between repos.
 
-> **Part of [Octopus Core](https://github.com/octoryn) — the open infrastructure stack for governed AI.** This is the root primitive the others share: [Scout](https://github.com/octoryn/octopus-scout) collects evidence · [Observe](https://github.com/octoryn/octopus-observe) canonicalizes it · [Blackboard](https://github.com/octoryn/octopus-blackboard) timelines it · [Runtime](https://github.com/octoryn/octopus-runtime) approves on it · [Replay](https://github.com/octoryn/octopus-replay) reconstructs it · [Experience](https://github.com/octoryn/octopus-experience) graphs it · [Inspect](https://github.com/octoryn/octopus-inspect) validates it.
+> **Part of [Octopus Core](https://github.com/octoryn) — the open infrastructure stack for governed AI.** This is the root primitive the others share: [Scout](https://github.com/octoryn/octopus-scout) collects evidence · [Observe](https://github.com/octoryn/octopus-observe) canonicalizes it · [Blackboard](https://github.com/octoryn/octopus-blackboard) timelines it · [Workstate](https://github.com/octoryn/octopus-workstate) records work-state on it · [Runtime](https://github.com/octoryn/octopus-runtime) approves on it · [Replay](https://github.com/octoryn/octopus-replay) reconstructs it · [Experience](https://github.com/octoryn/octopus-experience) graphs it · [Inspect](https://github.com/octoryn/octopus-inspect) validates it.
 
 ```
 Evidence  →  hash  →  chain (timeline)  →  verify
